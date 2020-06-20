@@ -7,6 +7,158 @@ Co to jest pakiet IP? Jakie pola zawiera nagłówek pakietu IPv4? Co to jest
 fragmentacja pakietów IP?
 }
 
+\subsection*{Pakiet IP}
+\textbf{Pakiet IP} to porcja danych utworzona w \textbf{warstwie trzeciej}
+\parit{internetowej, sieci} przez oprogramowanie implementujące protokół IP.
+Datagram IP składa się z nagłówka \parit{header} i bloku danych
+\parit{payload}.
+
+\textbf{Nagłówek} umożliwia obsługę routowania, identyfikację bloku danych,
+określanie rozmiaru nagłówka i datagramu oraz obsługę fragmentacji.\\
+Ma zmienną długość \parit{20 do 60 bajtów, co 4 bajty}.
+
+\textbf{Blok danych} może mieć długość do 65 515 bajtów.
+
+\subsection*{Pola nagłówka pakietu IPv4 \parit{w kolejności}}
+\begin{itemize}
+    \item \textbf{Wersja} \texttt{0100} \parit{4 bity}
+    \item \textbf{Długość nagłówka IP}
+          \parit{\texttt{IHL} - Internet Header Length} \parit{4 bity}
+    \item \textbf{Typ usługi} \parit{\texttt{TOS} - Type of Service}
+          \parit{8 bitów}\\
+          Pierwotnie:
+          \begin{itemize}
+              \item bity \texttt{0-2} - informacje o priorytecie
+              \item bit \texttt{3} - czy minimalizacja opóźnień
+              \item bit \texttt{4} - czy maksymalizacja szybkości przesyłania
+              \item bit \texttt{5} - czy maksymalizacja poprawności\\
+              \parit{używane przy zatorach w routerze, pakiety z jedynką
+              powinny być odrzucane w ostatniej kolejności}
+              \item bity \texttt{6-7} - zarezerwowane
+          \end{itemize}
+          Póżniej \texttt{DS} \parit{Differentiated Services}
+          \begin{itemize}
+              \item bity \texttt{0-5} - \texttt{DSCP}
+              \item bity \texttt{6-7} - \texttt{ECN}
+          \end{itemize}
+         \texttt{ECN} jest rozszerzeniem protokołów IP oraz TCP.
+         Umożliwia powiadamianie punktów końcowych IP/TCP o nadchodzącym zatorze
+         bez usuwania pakietów, poprzez ustawienie wartości \texttt{11} na
+         bitach \texttt{ECN}. Jest opcjonalny.
+    \item \textbf{Długość całkowita} \parit{16 bitów}
+    \begin{itemize}
+        \item Na podstawie tego pola oraz pola \textbf{Długość nagłówka}
+        można określić wielkość bloku danych oraz początek tego bloku.
+    \end{itemize}
+    \pagebreak
+    \item \textbf{Identyfikator} \parit{16 bitów}
+    \begin{itemize}
+        \item Wartość jest wpisywana przez host nadający i dla kolejnych
+        datagramów jest zwiększana o 1.
+        \item Pole jest  kopiowane dla każdego fragmentu.
+        \item Powinno być inicjowane przez protokół warstwy wyższej.
+    \end{itemize}
+    \item \textbf{Flagi} \parit{3 bity}
+    \begin{itemize}
+        \item Dwie flagi używane przy fragmentacji datagramów.
+        \item Bit \texttt{0}: zarezerwowane, musi być zero
+        \item Bit \texttt{1}: (DF) 0 = May Fragment, 1 = Don't Fragment
+        \item Bit \texttt{2}: (MF) 0 = Last Fragment, 1 = More Fragments\\
+    \end{itemize}
+
+    Jeśli bit \texttt{1} jest \textbf{ustawiony}, to znaczy,
+    że pakiet nie może być dzielony.
+    Taki pakiet w przypadku konieczności dzielenia jest odrzucany i do nadawcy
+    wysyłany jest komunikat ICMP
+    \parit{typ 3 z dodatkowo ustawionym polem kod na wartość 4}.
+    % W ostatnim fragmencie pakietu bit 2 jest wyzerowany
+    % \parit{w pozostałych fragmentach jest ustawiony}.
+
+    \item \textbf{Przesunięcie fragmentu} \parit{13 bitów}
+    \begin{itemize}
+        \item Zawiera informację o przesunięciu fragmentu względem początku oryginalnego pakietu.
+        \item Przesunięcie wyrażane jest w blokach ośmiobajtowych.
+        \item Przesunięcie pierwszego fragmentu wynosi 0.
+    \end{itemize}
+    \item \textbf{Czas życia} \parit{\texttt{TTL} - Time to Live} \parit{8 bitów}
+    \begin{itemize}
+        \item Określa przez ile łączy może przejść datagram zanim zostanie
+        odrzucony przez router.
+        \item Licznik, zmniejszany o 1 przez każdy router na drodze.
+        \item Jeśli \texttt{TTL = 0} pakiet jest odrzucany i wysyłany jest
+        komunikat \texttt{ICMP} \textit{Time Expired - TTL Expired}.
+        \item Zabezpiecza przed długimi pętlami i sytuacją, w której pakiet
+        wędrowałby w nieskończoność.
+        \item Ustawiany przez system operacyjny lub aplikację, np 128, 254.
+    \end{itemize}
+    \item \textbf{Protokół} \parit{8 bitów}
+    \begin{itemize}
+        \item Określa do jakiego protokołu warstwy wyższej przekazać datagram.
+        \item Np. \texttt{1 - ICMP, 6 - TCP, 17 - UDP}
+    \end{itemize}
+    \item \textbf{Suma kontrolna nagłówka} \parit{16 bitów}
+    \begin{itemize}
+        \item Liczona tylko dla nagłówka.
+        \item Jeśli w miejscu docelowym jest inna niż same jedynki, to znaczy,
+        że nagłowek uległ uszkodzeniu.
+        \item Pakiet w takim przypadku jest odrzucany i nie jest tworzony
+        komunikat o błędzie.
+    \end{itemize}
+    \item \textbf{Adres IP źródła} \parit{32 bity}
+    \item \textbf{Adres IP docelowy} \parit{32 bity}
+    \item \textbf{Dodatkowe opcje i wypełnienie} \parit{32 bity + ew. więcej}
+    \begin{itemize}
+        \item Maksymalnie 40 bajtów.
+        \item \textbf{Zapis trasy}, przez którą przeszedł datagram.
+        \item \textbf{Timestamp} - czas przejścia.
+        \item \textbf{Opcje routowania źródłowego}\\
+        Normalnie to routery wybierają dynamicznie trasę datagramów.
+        \begin{itemize}
+            \item \textbf{Dokładne} - wysyłający określa dokładną trasę,
+            jaką musi przejść datagram. Jeśli kolejne routery są przedzielone
+            jakimś innym routerem, to wysyła komunikat \texttt{ICMP}
+            \textit{source route failed} - \parit{typ 3 z dodadtkowo
+            ustawionym polem kod na wartość 3} i datagram jest odrzucany.
+
+            \item \textbf{Swobodne} - wysyłający określa listę adresów IP,
+            które musi przejść datagram, ale może przechodzić również przez inne
+            routery.
+        \end{itemize}
+    \end{itemize}
+    \item \textbf{Dane} \parit{segment TCP, datagram UDP, komunikat ICMP}
+\end{itemize}
+
+\subsection*{Fragmentacja pakietów IP}
+\textbf{MTU \parit{Maximum Transmission Unit}} to największa porcja danych,
+jaka może być przesłana w ramce przez pewną sieć \parit{lub połączone sieci}
+przy wykorzystaniu konkretnej technologii.
+
+Jeśli pakiet IP jest większy niż wynika to z \textbf{MTU} dla warstwy łącza
+danej technologii to \textbf{IP dokonuje dzielenia na mniejsze części}.
+
+Jeśli pakiet IP przechodzi przez kilka sieci, kolejne MTU mogą być różne.
+Najmniejsze MTU po drodze nazywa się \textbf{ścieżką MTU}.
+
+\begin{itemize}
+    \item Może być wykonanana komputerze wysyłającym, bądż na którymś z
+    routerów.
+    \item Oprogramowanie warstwy IP składa fragmenty w pakiety oryginalnej
+    wielkości.
+    \item Fragmenty mogą być dalej dzielone, informacje z nagłówka IP
+    \textbf{wystarczają do odtworzenia wyjściowych pakietów}.
+    \item Fragmenty stają się samodzielnymi pakietami.
+    \item Składanie w całość odbywa się na komputerze docelowym.
+\end{itemize}
+
+\subsubsection*{Dlaczego fragmentacja jest niekorzystna?}
+\begin{itemize}
+    \item
+Jeśli \textbf{zgubiony zostanie chociaż jeden fragment}
+\parit{i nie można odtworzyć oryginalnego pakietu},
+cały wyjściowy pakiet \textbf{jest odrzucony}
+i \textbf{wymagana jest retransmisja całego segmentu}.
+\item Może bardzo obciążać routery.
+\end{itemize}
 
 \pagebreak
 \end{document}
