@@ -2,6 +2,14 @@
 \documentclass{unibooklet}
 
 \usepackage{subfiles}
+\usepackage{moeptikz}
+
+\providecommand{\question}[1]{
+\begin{tcolorbox}
+\bfseries
+#1
+\end{tcolorbox}
+}
 
 \title{%
 \vskip 2cm
@@ -16,5 +24,6 @@ Sieci komputerowe\\
     \pagebreak
 
     \subfile{sections/01}
+    \subfile{sections/02}
 
 \end{document}

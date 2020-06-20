@@ -26,6 +26,9 @@
 \RequirePackage{microtype}
 \RequirePackage{parskip}
 \RequirePackage{amsmath}
+\RequirePackage{enumitem}
+
+\setlist{nosep}
 
 \setmainfont[Path = fonts/lato/,
 BoldItalicFont=Lato-RegIta,BoldFont=Lato-Reg,ItalicFont=Lato-LigIta]{Lato-Lig}
