@@ -7,7 +7,79 @@ Jak wygląda i do czego służy adres z klasy adresowej C (A, B, D).\\
 Proszę podać przykład.
 }
 
+\subsection*{Klasy adresów sieci}
 
+\begin{tabularx}{\textwidth}{|X|X|X|X|X|}
+ \hline
+\textbf{Klasa} & \textbf{Adres IP} & \textbf{Adres sieci} & \textbf{Zakres 1-go bajtu} & \textbf{Najstarsze bity} \\
+\hline
+A & \texttt{w.x.y.z} & \texttt{w.0.0.0} & \texttt{1 - 126} & \texttt{0} \\
+\hline
+B & \texttt{w.x.y.z} & \texttt{w.x.0.0} & \texttt{129 - 191} & \texttt{10} \\
+\hline
+C & \texttt{w.x.y.z} & \texttt{w.x.y.0} & \texttt{192 - 223} & \texttt{110} \\
+\hline
+D & \texttt{w.x.y.z} & nie dotyczy & \texttt{224 - 239} & \texttt{1110} \\
+\hline
+E & \texttt{w.x.y.z} & nie dotyczy & \texttt{240 - 255} & \texttt{11110} \\
+\hline
+\end{tabularx}
+
+    Same zera i jedynki nie mogą być wykorzystane.
+    Same zera w części hosta oznaczają adres sieci.
+    Same jedynki to adres rozgłoszeniowy w danej sieci.
+
+\subsection*{Adresy klasy A}
+\begin{itemize}
+    \item $126$ sieci, każda może zawierać $2^{24}-2$, (16 777 214) komputerów
+    \item Przyznane organizacjom rządowym i wielkim instytucjom.
+\end{itemize}
+
+\subsubsection*{Przykład}
+\begin{center}
+\texttt{1.0.0.1, 126.0.0.1, 1.255.255.254, 6.1.2.3}
+\end{center}
+
+\subsection*{Adresy klasy B}
+\begin{itemize}
+    \item $(191-128+1)\cdot 256 = 16 384$ sieci, każda może zawierać $2^{16}-2$,
+    (65 534) komputery
+    \item Sieci średniej wielkości.
+\end{itemize}
+
+\subsubsection*{Przykład}
+\begin{center}
+\texttt{128.0.0.1, 191.255.255.254, 128.16.0.254, 130.1.2.3}
+\end{center}
+
+\pagebreak
+\subsection*{Adresy klasy C}
+\begin{itemize}
+    \item $(192-223+1)\cdot 256\cdot 256 = 2 097 152$ sieci,
+    każda może zawierać $2^{8}-2$, (254) komputery
+    \item Dużo podsieci, miało komputerów.
+\end{itemize}
+
+\subsubsection*{Przykład}
+\begin{center}
+\texttt{192.0.0.1, 223.255.255.254, 198.16.0.254, 220.1.2.3}
+\end{center}
+
+\subsection*{Adresy klasy D}
+\begin{itemize}
+    \item Przeznaczone do \textbf{transmisji grupowych}.
+\end{itemize}
+
+\subsection*{Adresy klasy E}
+\begin{itemize}
+    \item Adresy zarezerwowane \textit{(nie wykorzystywane normalnie do
+    transmisji pakietów)}.
+\end{itemize}
+
+\subsection*{Adres loopback}
+Adres postaci \texttt{127.x.y.z} \textit{(na ogół \texttt{127.0.0.1})}
+zarezerwowany jest dla tzw. pętli zwrotnej \textit{(cały ruch przesyłany na ten
+adres nie wychodzi z komputera)}.
 
 \pagebreak
 \end{document}
