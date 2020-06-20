@@ -2,96 +2,6 @@
 
 \begin{document}
 
-\section{Charakterystyka sieci LAN, WAN. Topologie połączeń.
-Komutacja obwodów vs. komutacja pakietów i komutacja komórek.}
-
-\question{
-Jak wygląda i do czego służy adres z klasy adresowej C (A, B, D).\\
-Proszę podać przykład.
-}
-
-\question{
-Proszę ustalić adresację IP \textit{(podpisać na rysunku)} mając do dyspozycji
-sieci:
-\begin{itemize}[noitemsep]
-    \item \texttt{41.3.3.32/28}
-    \item \texttt{101.2.2.192 255.255.255.252}
-    \item \texttt{48.13.16.128/29}
-\end{itemize}
-}
-\begin{figure}[ht!]
-\centering
-\begin{tikzpicture}[x=1cm,y=1cm]
-    \node[client,label=above:{PC C}] (c) at (1,0) {};
-    \node[client,label=above:{PC D}] (d) at (3,0) {};
-    \node[client,label=below:{PC A}] (a) at (2,-3) {};
-
-    \node[router,label=below:{\small R1}] (r1) at (4,-3) {};
-    \node[router,label=below:{\small R2}] (r2) at (7.5,-3) {};
-
-    \node[client,label=below:{PC J}] (j) at (9.5,-3) {};
-    \node[client,label=below:{PC B}] (b) at (11,-3) {};
-
-    \node[client,label=above:{PC F}] (f) at (7,0) {};
-    \node[client,label=above:{PC G}] (g) at (8.5,0) {};
-    \node[client,label=above:{PC H}] (h) at (10,0) {};
-    \node[client,label=above:{PC E}] (e) at (11.5,0) {};
-
-    \draw[black,line width=1pt] (0.5, -1.5) -- (4.5,-1.5);
-    \draw[black,line width=1pt] (6.5, -1.5) -- (12,-1.5);
-
-    \draw[black,line width=1pt] (c) -- (1, -1.5);
-    \draw[black,line width=1pt] (d) -- (3, -1.5);
-    \draw[black,line width=1pt] (a) -- (2, -1.5);
-
-    \draw[black,line width=1pt] (j) -- (9.5, -1.5);
-    \draw[black,line width=1pt] (b) -- (11, -1.5);
-
-    \draw[black,line width=1pt] (f) -- (7, -1.5);
-    \draw[black,line width=1pt] (g) -- (8.5, -1.5);
-    \draw[black,line width=1pt] (h) -- (10, -1.5);
-    \draw[black,line width=1pt] (e) -- (11.5, -1.5);
-
-    \draw[black,line width=1pt] (r1.east) node[above right] {{eth1}} -- (r2.west)
-    node[above left] {{eth0}};
-
-
-    \draw[black,line width=1pt] (4,-1.5) -- (r1.north)
-    node[above left] {{eth0}};
-
-    \draw[black,line width=1pt] (7.5,-1.5) -- (r2.north)
-    node[above right] {{eth1}};
-
-\end{tikzpicture}
-\end{figure}
-
-\question{
-Co to jest \textit{ramka danych}. Proszę opisać, z czego się składa.
-Czy każda ramka zawiera pakiet IP? Jeśli nie, to proszę podać przykłady.
-}
-
-\question{
-Co to jest pakiet IP? Jakie pola zawiera nagłówek pakietu IPv4? Co to jest
-fragmentacja pakietów IP?
-}
-
-\question{
-Proszę opisać najważniejsze procesy działające w sieci komputerowej od
-wpisania w przeglądarce adresu WWW do wyświetlenia strony.
-}
-
-\question{
-Co to jest segment TCP? Jakie pola zawiera nagłówek segmentu TCP?
-}
-
-\question{
-Jakie są podstawowe cechy protokołu TCP?
-}
-
-\question{
-Na czym polega niezawodność protokołu TCP?
-}
-
 \question{
 Proszę porównać protokół TCP i UDP.
 }
@@ -221,6 +131,7 @@ Który z poniższych adresów hosta jest z podsieci, w której można zaadresowa
     \item \texttt{133.34.54.255/32}
 \end{enumerate}
 }
+
 
 \pagebreak
 \end{document}
