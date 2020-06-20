@@ -11,6 +11,8 @@
 \newcommand{\horrule}[1]{\rule{\linewidth}{#1}}
 \newcommand\tab[1][1cm]{\hspace*{#1}}
 
+\newcommand{\parit}[1]{\textit{(#1)}}
+
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 \PassOptionsToClass{a5paper, oneside}{article}
 \ProcessOptions\relax

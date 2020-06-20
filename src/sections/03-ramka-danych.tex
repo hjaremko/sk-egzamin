@@ -3,10 +3,35 @@
 \begin{document}
 
 \question{
-Co to jest \textit{ramka danych}. Proszę opisać, z czego się składa.
+Co to jest \textit{ramka danych}? Proszę opisać, z czego się składa.
 Czy każda ramka zawiera pakiet IP? Jeśli nie, to proszę podać przykłady.
 }
 
+\textbf{Ramka} to porcja danych przesyłana w sieciach komputerowych, tworzna
+na poziomie \textbf{dostępu do sieci} \parit{warstwa druga}.\\
+Urządzenie zapewniające dostęp do nośnika przesyła pewne sygnały, które są
+interpretowane jako bity.\\
+Wysyłany ciąg bitów zawiera pewne informacje i może być podzielony na porcje
+zwane polami.
+
+\subsection*{Pola ramki}
+\begin{itemize}
+    \item Ogranicznik początku ramki \parit{ustalony wzór bitów}
+    \item Adres fizyczny nadawcy \parit{źródła danych}
+    \item Adres fizyczny odbiorcy \parit{miejsca docelowego}
+    \item Dane
+    \item Ogranicznik końca ramki \parit{sekwencja kontrolna ramki}
+\end{itemize}
+
+Ogranicznik początku ramki może być poprzedzony lub może zawierać tzw.
+preambułę, która w pewnych technologiach sieciowych jest stosowana do
+synchronizacji nadajnika i odbiornika. Wielkość pól określana jest w oktetach.
+
+\textbf{Uwaga:} nie wszystkie technologie sieciowe wykorzystują ramki o podanej
+strukturze.
+
+\subsection*{Czy każda ramka zawiera pakiet IP?}
+\subsubsection*{Nie, na przykład ramka \texttt{ ARP Request}.}
 
 \pagebreak
 \end{document}
