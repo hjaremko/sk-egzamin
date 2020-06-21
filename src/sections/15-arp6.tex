@@ -1,0 +1,44 @@
+\documentclass[../sk-egzamin.tex]{subfiles}
+
+\begin{document}
+
+\question{
+Czym zastąpiono protokół ARP w IPv6?
+}
+
+Protokół ARP został zastąpiony przez protokół \texttt{ICMPv6}, który przejął
+jego obowiązki.
+
+\subsection*{ICMPv6}
+
+\begin{itemize}
+    \item Wykrywanie sąsiadów i szukanie routerów.
+    \item Przekazywanie komunikatów o błędach w routowaniu.
+    \item Komunikaty Echo Request i Echo Reply.
+\end{itemize}
+
+\subsubsection*{Wykrywanie sąsiada \parit{Neighbor Discovery}}
+
+\begin{itemize}
+    \item \textbf{Zastępuje ARP}, starą wersję ICMP router discovery oraz
+    przekierowanie a także wykrywanie zduplikowanych adresów IP.
+    \item Nowy mechanizm - wykrywanie czy sąsiad jest osiągalny.
+    \begin{itemize}
+        \item Uwalnia od kłopotów związanych z uszkodzeniem łączy,
+        np. zdezaktualizowanymi pamięciami podręcznymi ARP.
+        \item W przypadku uszkodzenia routera, automatycznie przekonfigurowuje
+        się na połączenia na routery działające.
+    \end{itemize}
+\end{itemize}
+
+Dla celów wykrywania adresów warstwy drugiej (analogicznie do ARP w IPv4) oraz
+wykrywania osiągalności hosta i wykrywania powtórzenia adresów IP stosuje się
+komunikaty Neighbor Solicitation oraz Neighbor Advertisement.
+Komunikaty Neighbor Advertisement są wysyłane po zmianach w sieci oraz w
+odpowiedzi na Neighbor Solicitation.
+Neighbor Advertisement zawiera adres MAC.
+Komunikaty Neighbor Solicitation i Router Solicitation są przesyłane na adres
+IPv6 typu solicited-node multicast.
+
+\pagebreak
+\end{document}
