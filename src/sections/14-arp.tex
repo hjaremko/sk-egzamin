@@ -1,0 +1,112 @@
+\documentclass[../sk-egzamin.tex]{subfiles}
+
+\begin{document}
+
+\question{
+Jak działa ARP?
+}
+
+\textbf{ARP \parit{Address Resolution Protocol}} tłumaczy adresy między
+warstwą internetową a warstwą interfejsu sieciowego.
+
+\begin{itemize}
+    \item Dotyczy tylko \textbf{IPv4}, w wersji IPv6 \textbf{nie jest}
+    wykorzystywany, zastępują go inne mechanizmy.
+
+    \item Ze względu na możliwość wymiany karty sieciowej w komputerze o
+    określonym adresie IP jest dynamiczny.
+
+    \item Oparty na metodzie rozgłoszeniowej i zasadzie żądania i odpowiedzi.
+\end{itemize}
+
+\subsection*{Działanie}
+\begin{enumerate}
+    \item Sprawdza w pamięci podręcznej tablicę przyporządkowującą adresy
+    MAC adresom IP.
+
+    \item Jeśli odpowiedni wpis \textbf{nie zostanie znaleziony} zostaje
+    wysłana ramka \texttt{ARP Request Message}.
+    Jest to ramka rozgłoszeniowa do wszystkich węzłów fizycznego segmentu sieci,
+    do którego przyłączony jest nadawca \parit{ARP requester}.
+
+    W ramce jest zapisane pytanie:
+    \texttt{Kto ma adres IP 149.159.12.15?}\\
+    \texttt{Proszę podać mi adres MAC}.
+
+    \item Po otrzymaniu \texttt{ARP Request} uaktualniane są również cache ARP
+    w komputerach, które otrzymały tę ramkę, a któe miały w cache IP komputera,
+    który wysłał żądanie.
+
+    \item Wpisy w cache ARP są usuwane po okresie nieużywania rzędu kilku minut.
+\end{enumerate}
+
+\subsection*{Możliwe są dwa przypadki:}
+\begin{enumerate}
+    \item \textbf{Węzeł docelowy znajduje się w tym samym segmencie sieci}
+    \begin{enumerate}
+        \item \textit{ARP requester} pyta wprost kto ma docelowy IP.
+        \item \textit{ARP responder} wysyła ARP Reply pod adres MAC, z któego
+        przyszło żądanie.
+        Adres ten jest znany, gdyż znajduje się w ramce zapytania ARP.
+        \item Po wymianie ramek nadawca i odbiorca mają uaktualnione tablice
+        w pamieci podręcznej.
+    \end{enumerate}
+
+    \item \textbf{Węzeł docelowy znajduje się w innym segmencie sieci}
+    \begin{enumerate}
+        \item Datagram musi być skierowany do domyślnego routera.
+        \item \textit{ARP requester} pyta kto ma adres IP domyślnego routera.
+        \item Router odpowiada wysyłająć ARP respond ze swoim adresem MAC.
+        \item W przypadku, gdy w konfiguracji komputerów w sieci nie ma IP
+        routera domyślnego, można skorzystać z \texttt{Proxy ARP}.
+    \end{enumerate}
+\end{enumerate}
+
+\subsection*{Struktura ramki ARP}
+\begin{itemize}
+    \item \textbf{Typ sprzętu} \parit{2 oktety}
+    \item \textbf{Typ protokołu} \parit{2 oktety}
+    \item \textbf{Długość adresu sprzętu} \parit{1 oktet}
+    \item \textbf{Długość adresu protokołu} \parit{1 oktet}
+    \item \textbf{Kod operacji} \parit{2 oktety}
+    \item \textbf{Adres sprzętu nadawcy} \parit{dla Ethernet 6 oktetów}
+    \item \textbf{Adres protokołu nadawcy} \parit{dla IPv4 4 oktety}
+    \item \textbf{Adres sprzętu docelowego} \parit{dla Ethernet 6 oktetów}
+    \item \textbf{Adres protokołu docelowego} \parit{dla IPv4 4 oktety}
+\end{itemize}
+
+\subsection*{Wykrywanie zduplikowanych adresów IP \parit{zbędny ARP}}
+
+\begin{itemize}
+    \item Węzeł wysyła ARP Request z \textbf{zapytaniem o swój własny adres}.
+    \begin{itemize}
+        \item Jeśli ARP Reply \textbf{nie nadejdzie}, to znaczy, że w lokalnym
+        segmencie \textbf{nie ma konfliktu}.
+
+        \item Jeśli odpowiedź nadejdzie, oznacza to \textbf{konflikt}.
+    \end{itemize}
+
+    \item Węzeł już skonfigurowany traktowany jest jako węzeł z poprawnym
+    adresem \parit{węzęł zgodny, defending node}.
+
+    \item Węzeł wysyłający \textit{zbędny ARP} jest \textbf{węzłem konfliktowym}.
+
+    \item Węzeł konfliktowy \textbf{wprowadza błąd} w cache ARP komputerów w
+    \textbf{całym segmencie sieci}.
+    ARP Reply z węzła zgodnego nie naprawia sytuacji
+    \parit{ramka ARP nie jest ramką rozgłoszeniową}.
+\end{itemize}
+
+\subsection*{Proxy ARP}
+
+Router ze skonfigurowanym mechanizmem Proxy ARP
+\textbf{odpowiada na ramki ARP Request w imieniu wszystkich węzłów}
+– komputerów spoza segmentu sieci lokalnej.
+Może być używany jest np. w sytuacji, gdy komputery w sieci nie mają ustawionego
+domyślnego routera.
+Routery mogą mieć włączoną standardowo opcję Proxy ARP, wówczas jeśli jakiś
+komputer wyśle ARP Request z adresem spoza danej sieci lokalnej (zwykle to nie
+następuje), to router odpowie \textit{w imieniu} komputera zewnętrznego.
+
+\pagebreak
+\end{document}
