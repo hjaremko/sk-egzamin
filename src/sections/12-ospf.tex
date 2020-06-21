@@ -20,7 +20,7 @@ Proszę opisać działanie protokołu OSPF.
     \item Protokół \textbf{bezklasowy}.
     \item Metryką jest \textbf{szybkość łącza}.
     \item Umożliwia \textbf{uwierzytelnienie}.
-    \item \textbf{Szybko uzyskuje zbieżność}.
+    \item \textbf{Szybko uzyskuje zbieżność} \parit{trigger updates}.
     \item \textbf{Flooding} do utworzenia map topologii.
     Generuje bardzo duży ruch w sieci.
     \item Ruch w wielodostępnych fragmentach sieci
@@ -69,6 +69,22 @@ pamięć routera. Dzieląc sieć na obszary zmniejszamy wielkość grafu.
     Totally Stubby Area.
 \end{itemize}
 Routery na granicach obszarów powinny być odpowiednio skonfigurowane.
+
+\subsection*{Nagłówek OSPF}
+\begin{itemize}
+    \item Typ pakietu, ID routera, ID obszaru
+\end{itemize}
+
+\subsection*{Pakiety OSPF}
+\begin{itemize}
+    \item \textbf{HELLO} - nawiązywanie sąsiedztwa, sprawdzanie obecności
+    sąsiadów i stanu łącza.
+    \item \textbf{DBD} - skrócona lista bazy danych łącze stan.
+    \item \textbf{LSR} - żądanie dodadtkowych informacji o wpisie z DBD.
+    \item \textbf{LSU} - aktualizacja będąca odpowiedzą na LSR.
+    \item \textbf{LSA} - potwierdzenie odebrania LSU.
+\end{itemize}
+
 
 \pagebreak
 \end{document}
