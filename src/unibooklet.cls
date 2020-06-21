@@ -30,7 +30,7 @@
 \RequirePackage{amsmath}
 \RequirePackage{enumitem}
 
-\setlist{nosep}
+% \setlist{nosep}
 
 \setmainfont[Path = fonts/lato/,
 BoldItalicFont=Lato-RegIta,BoldFont=Lato-Reg,ItalicFont=Lato-LigIta]{Lato-Lig}

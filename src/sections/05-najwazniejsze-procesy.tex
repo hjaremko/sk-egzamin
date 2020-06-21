@@ -7,6 +7,61 @@ Proszę opisać najważniejsze procesy działające w sieci komputerowej od
 wpisania w przeglądarce adresu WWW do wyświetlenia strony.
 }
 
+\textbf{Komputer źródłowy:} \texttt{K1 (IP1, MAC1)}\\
+\textbf{Komputer docelowy:} \texttt{K2 (IP2, MAC2, WWW2)}
+
+Jeśli ktoś na \texttt{K1} próbuje otworzyć \texttt{WWW2}, to:
+\begin{enumerate}
+    \item Zadziała system DNS: \texttt{K1} skontaktuje się ze swoim
+    serwerem DNS i zapyta jaki jest adres IP komputera
+    związanego z nazwą domenową \texttt{WWW2}.
+    Serwer DNS znajdzie odpowiedni adres w swoich zasobach i odeśle informację
+    do \texttt{K1}.
+
+    \item Przeglądarka utworzy komunikat \parit{według protokołu HTTP}.
+    Do komunikatu zostanie dołączony nagłówek \parit{według protokołu TCP},
+    który zawiera m. in. port docelowy \parit{standardowo 80} oraz port
+    źródłowy.
+    Komunikat razem z dołączonym nagłówkiem TCP nazywa się \textbf{segmentem
+    TCP}.
+
+    \item Do segmentu TCP zostanie dodany nagłówek IP - powstaje
+    \textbf{pakiet IP}.
+
+    \item Pakiet musi być przesłany w ramce.
+    Do pakietu musi zostać dodany nagłówek ramki, zawierający źródłowy i
+    docelowy MAC.\\
+    \textbf{\texttt{K1} nie zna adresu \texttt{MAC2}}.
+    Zna tylko \texttt{IP2}.
+    Wykorzysytwany jest \textbf{protokół ARP}.
+    \begin{itemize}
+        \item \texttt{K1} wysyła \texttt{ARP Request}
+        \parit{nie zawiera pakietu IP}, której adres docelowy to adres
+        rozgłoszeniowy.
+
+        \item Każdy komputer przyłączony do switcha ma obowiązek odebrać
+        ramkę wysyłaną na adres rozgłoszeniowy MAC.
+        Jednak tylko komputer o zadanym IP odpowie na \texttt{ARP Request}.
+    \end{itemize}
+
+    \item Odpowiedź \texttt{ARP Reply} jest wysyłana na adres \texttt{MAC1}.
+
+    \item Po tym, jak \texttt{K1} pozna adres \texttt{MAC2} może już zbudować
+    ramkę przeznaczoną do \texttt{K2}.
+    Ramka jest wysłana do switcha, a switch dostarcza ją tylko do \texttt{K2}.
+
+    \item \texttt{K2} Odbiera ramkę, sprawdza MAC docelowy i sumę kontrolną,
+    po czym wyjmuje z ramki pakiet IP.
+    Sprawdza adres docelowy IP i wyjmuje z pakietu segment TCP.
+    Sprawdza do którego portu należy przekazać zawartość \parit{komunikat HTTP}
+    i ostatecznie wyjmuje komunikat HTTP z segmentu i przekazuje do portu 80,
+    na którym nasłuchuje serwer WWW.
+
+    \item Serwer WWW konstruuje odpowiedź - stronę WWW.
+    Strona ta zostaje umieczona w komunikacie HTTP, który natępnie musi być
+    przesłany do \texttt{K1}. Mechanizm jest \textbf{analogiczny} jak
+    poprzednio.
+\end{enumerate}
 
 \pagebreak
 \end{document}
