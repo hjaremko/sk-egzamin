@@ -1,0 +1,74 @@
+\documentclass[../sk-egzamin.tex]{subfiles}
+
+\begin{document}
+
+\question{
+Proszę opisać działanie protokołu OSPF.
+}
+
+\subsection*{Cechy}
+\begin{itemize}
+    \item Protokół \textbf{stanu łącza}.
+    \begin{itemize}
+        \item Łącze reprezentuje połączenie z sąsiednimi routerami, komputerem
+        lub siecią.
+
+        \item \textbf{Stan łącza} składa się z wielu atrybutów np.
+        prędkość transmisji, opóźnienie, adres IP, sąsiedzi.
+    \end{itemize}
+
+    \item Protokół \textbf{bezklasowy}.
+    \item Metryką jest \textbf{szybkość łącza}.
+    \item Umożliwia \textbf{uwierzytelnienie}.
+    \item \textbf{Szybko uzyskuje zbieżność}.
+    \item \textbf{Flooding} do utworzenia map topologii.
+    Generuje bardzo duży ruch w sieci.
+    \item Ruch w wielodostępnych fragmentach sieci
+    (więcej niż dwa routery mogą być bezpośrednio połączone np. Ethernet)
+    jest ograniczany poprzez wybranie tzw. DR (designated router), z którym
+    (jednym) wymieniają informacje wszystkie inne routery.
+    Wybierany jest również BDR (backup designated router).
+    \item Trudność w konfiguracji.
+\end{itemize}
+
+\subsection*{Działanie}
+\begin{itemize}
+    \item Każdy router buduje informację o połączeniach w całej sieci
+    \parit{systemu autonomicznego} w formie grafu.
+    \item Wyliczane są najkrótsze ścieżki od danego węzła do wszystkich innych
+    węzłów za pomocą \textbf{algorytmu Dijkstry}.
+    \item Nie są przesyłane okresowo tablice routowania.
+    \item Przesyłane są jedynie informacje o zmianach w stanie łączy
+    \textbf{do wszystkich węzłów}.
+\end{itemize}
+
+\subsection*{Obszary}
+Obliczanie najkrótszych ścieżek w grafie stosunkowo mocno obciąża procesor i
+pamięć routera. Dzieląc sieć na obszary zmniejszamy wielkość grafu.
+
+\begin{itemize}
+    \item Każdy obszar OSPF ma przypisany numer. Jeśi jest tylko jeden obszar,
+    to musi mieć numer 0.
+    \item Jeśli obszarów jest więcej, to wszystkie muszą się łączyć poprzez
+    obszar 0 \parit{najlepiej fizycznie, można wirtualnie}.
+\end{itemize}
+
+\subsubsection*{Rodzaje obszarów}
+\begin{itemize}
+    \item \textbf{Normalne}
+    \item \textbf{Stub Area} - NIE są wprowadzane trasy
+    zewnętrzne \parit{z innych protokołów routingu},
+    natomiast sumy tras z innych obszarów są.
+    \item \textbf{Totally Stubby Area} - nie są wprowadzane ani trasy
+    zewnętrzne, ani sumy tras z innych obszarów.
+    Wyjście z takiego obszaru tylko przez trasę domyślną.
+    \item \textbf{Not So Stubby Area} \parit{NSSA} - obszar Stub, do którego
+    wprowadzane są pewne \parit{na ogól nieliczne} trasy zewnętrzne, które
+    następnie przekazywane są do innych obszarów tak jak sumy tras.
+    \item \textbf{Not So Stubby Totally Stobby Area} - połączenie NSSA i
+    Totally Stubby Area.
+\end{itemize}
+Routery na granicach obszarów powinny być odpowiednio skonfigurowane.
+
+\pagebreak
+\end{document}
