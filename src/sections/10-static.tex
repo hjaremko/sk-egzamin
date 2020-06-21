@@ -1,0 +1,56 @@
+\documentclass[../sk-egzamin.tex]{subfiles}
+
+\begin{document}
+
+\question{
+Co to jest routing statyczny i jak można go skonfigurować na routerach?
+}
+
+Routowanie jest to proces przesyłania pakietów (datagramów IP) od hosta
+nadawczego do odbiorcy na ogół z wykorzystaniem routerów pośredniczących.
+
+Każdy host oraz router podejmuje decyzje którędy przesłać datagram.
+Decyzje te są podejmowane na podstawie tzw. \textbf{tabel routowania} oraz
+pewnych reguł.
+
+O \textbf{routingu statycznym} mówi się w przypadku, gdy w routerze tabela
+routowania jest wypełniona wpisami statycznymi i nie zmienia się.
+
+\subsection*{Tablica routowania IP}
+\begin{itemize}
+    \item Zawiera wpisy dotyczące tras do hostów, routerów i sieci.
+    \item W hostach liczba wpisów jest dużo mniejsza od liczby wpisów w
+    routerach i zawiera informacje o bramie domyślnej.
+    Brama domyślna to router, do którego kierowany jest datagram, jeśli nie
+    została znaleziona dla niego lepsza trasa w tablicy routowania.
+\end{itemize}
+
+\subsection*{Przykładowa struktura wpisu w tablicy routowania}
+\begin{itemize}
+    \item \textbf{Przeznaczenie} - ID sieci lub IP konkretnego
+    hosta lub routera.
+    Nie może zawierać jedynek w miejscu, gdzie w masce są zera \parit{binarnie}.
+    \item \textbf{Maska sieci} - może też zawiera same jedynki.
+    \item \textbf{Adres następnego skoku} - bez znaczenia dla połączeń
+    punkt-punkt.
+    \item \textbf{Interfejs} - przez który datagram będzie przesłany do
+    następnego skoku.
+    \item \textbf{Metryka}% - koszt trasy, im wyższa tym gorsza.
+    - porównywane, gdy tablica zawiera więcej niż jedną trasę.
+    %  do miejsca
+    % przeznaczenia.
+    \item \textbf{Odległość administracyjna} - statyczne wpisy mają wartość 1.
+    \item \textbf{Trasa domyślna} - może być oznaczona przez \texttt{0.0.0.0}
+    w polu przeznaczenie i \texttt{0.0.0.0} w polu maska sieci.
+\end{itemize}
+
+\subsection*{Konfiguracja}
+
+\begin{minted}{bash}
+R(config)# ip routing
+R(config)# ip route 192.168.0.0 255.255.255.0 fa0/0
+R(config)# ip route 192.168.0.0 255.255.255.0 10.0.0.1
+\end{minted}
+
+\pagebreak
+\end{document}
