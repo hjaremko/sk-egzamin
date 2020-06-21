@@ -1,0 +1,74 @@
+\documentclass[../sk-egzamin.tex]{subfiles}
+
+\begin{document}
+
+\question{
+Proszę opisać działanie protokołu EIGRP.
+}
+
+\subsection*{EIGRP}
+\begin{itemize}
+    \item Obsuguje \textbf{adresowanie bezklasowe.}
+    \item Numer systemu autonomicznego taki sam jak w komunikujących się
+    routerach.
+    \item \textbf{IGRP i EIGRP} mogą ze sobą współpracować, jeśli mają ten sam
+    numer.
+    \begin{itemize}
+        \item Nastąpi przeliczenie metryki.
+        \item Trasa z IGRP jest traktowana jak trasa zewnętrzna.
+    \end{itemize}
+    \item Metryka 32 bitowa.
+    \begin{itemize}
+        \item Aktualizacje zawierają liczbę skokó dla trasy, jednak liczba
+        skoków nie jest brana pod uwagę przy wyliczaniu metryki.
+    \end{itemize}
+\end{itemize}
+
+\subsection*{Kluczowe technologie i idee}
+\begin{itemize}
+    \item Wykrywanie \textbf{sąsiadów}.
+    \item Diffusing Update Algorithm \textbf{DUAL}.
+    \item \textbf{Trigger updates} po wykryciu zmiany lub nowego sąsiada.
+    \item Komunikaty \textbf{HELLO}.
+    \item Wyznaczają \textbf{succesorów, feasible succesorów}.
+\end{itemize}
+
+\subsection*{Zalety}
+\begin{itemize}
+    \item \textbf{Minimalne zużycie szerokości pasma} gdy sieć jest stabilna.
+    \begin{itemize}
+        \item W czasie normalnego stabilnego działania sieci jedynymi
+        wymienianymi pakietamy są pakiety \textbf{HELLO}.
+        \item Wydajne wykorzystanie szerokości pasma w czasie uzyskiwania
+        zbieżności.
+        \begin{itemize}
+            \item Propagowane są jedynie zmiany, nie całe wektory odległości.
+            \item Po wykryciu sąsiada uaktualnienie wysyłane jest tylko do
+            niego (unicast).
+        \end{itemize}
+    \end{itemize}
+    \item \textbf{Szybka zbieżność}.
+\end{itemize}
+
+EIGRP wykorzystuje specjalny \textbf{niezawodny protokół} w warstwie transportu
+\parit{RTP - Reliable Transport Protocol}.
+
+\begin{itemize}
+    \item Aktualizacje są przesyłane na adres grupowy \texttt{224.0.0.10}.
+    Potwierdzenia są przesyłane na adres unicast.
+    Jeśli potwierdzenie z określonym numerem sekwencji nie nadejdzie w czasie
+    RTO \parit{Retransmission Time Out}, pakiet z aktualizacją jest
+    transmitowany, tym razem na adres jednostkowy.
+
+    \item Zwykłe pakiety HELLO oraz potwierdzenia nie są potwierdzane.
+
+    \item DUAL jest używany do wyznaczania sukcesorów i wykonalnych sukcesorów
+    określających \textbf{trasy zapasowe}.
+
+    \item Mechanizm wyznaczania tras zapasowych zapewna, że
+    \textbf{nie ma w nich pętli routowania}.
+\end{itemize}
+
+
+\pagebreak
+\end{document}
