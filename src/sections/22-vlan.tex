@@ -1,0 +1,149 @@
+\documentclass[../sk-egzamin.tex]{subfiles}
+
+\begin{document}
+
+\question{
+Co to są VLANy i jak można je konfigurować?
+}
+
+\subsection*{Wirtualne sieci LAN}
+\begin{itemize}
+    \item Sieć komputerowa wydzielona \textbf{logicznie} w ramach innej,
+    większej sieci fizycznej.
+
+    \item Tworzone przy pomocy \textit{switchy}.
+
+    \item Przez konfigurację portów w switchach można tworzyć podsieci
+    \textit{przełączalne}, ze wspólną dziedziną rozgłaszania w warstwie trzeciej
+    \parit{i drugiej}.
+
+    \item Każda sieć VLAN musi mieć przysany inny adres IP sieci.
+
+    \item Są konfigurowane programowo, ewentualne zmiany konfiguracji nie
+    wymagają zmian w okablowaniu.
+
+    \item Komputery z każdej utworzonej sieci wirtualnej nie muszą być dołączone
+    bezpośrednio do jednego przełącznika (jednak wszystkie połączone
+    przełączniki muszą być odpowiednio skonfigurowane).
+
+    \item Urządzenia należące do jednej sieci wirtualnej mogą się ze sobą
+    komunikować tak jakby były w jednym segmencie sieci LAN
+    (segment w warstwie drugiej i trzeciej ISO OSI).
+    W całym takim segmencie na przykład działa protokół ARP, czyli ramka ARP
+    request wysłana na adres rozgłoszeniowy MAC (48 jedynek) powinna dotrzeć
+    (dociera) do wszystkich komputerów dołączonych do tej samej sieci VLAN
+    (i przypiętych do tego samego przełącznika lub do różnych przełączników).
+
+    \item \textbf{Komunikacja między sieciami wirtualnymi wymaga routera},
+    nawet jeśli sieci wirtualne utworzone są tylko na jednym przełączniku.
+    Są jednak przełączniki (przełączniki obsługujące warstwę 3), które potrafią
+    wykonywać routowanie między równymi sieciami VLAN.
+\end{itemize}
+
+\subsubsection*{Mogą być budowane w oparciu o:}
+\begin{itemize}
+    \item \textbf{Porty w switchach.}
+    \begin{itemize}
+        \item Porty są przypisywane do odpowiednich VLAN'ów.
+        \item Określane jako statyczne, port-centric lub port-based.
+        Najczęstszy.
+        \item Umożliwia łatwą współpracę z serwerami DHCP.
+    \end{itemize}
+    \item \textbf{Adresy MAC.}
+    \begin{itemize}
+        \item Urządzenie o danym adresie MAC będzie zawsze przypisywane do
+        jednej określonej sieci VLAN bez względu na to, do którego przełącznika
+        jest w danej chwili bezpośrednio dołączone.
+
+        \item Wymaga sporo dodatkowej pracy administracyjnej.
+    \end{itemize}
+\end{itemize}
+
+\subsubsection*{Korzyści}
+\begin{itemize}
+    \item Można łatwo zmieniać położenie stacji roboczych w sieci VLAN.
+    \item Można łatwo zmieniać konfigurację sieci lokalnej VLAN.
+    \item Można łatwo kontrolować ruch w sieci \parit{np. na routerach
+    łączących różne sieci VLAN}.
+    \item Można zwiększyć bezpieczeństo \parit{rozdzielenie użytkowników}.
+\end{itemize}
+
+
+\subsection*{VLAN Trunking Protocol}
+\begin{itemize}
+    \item \textbf{Trunk} - połączenie między przełącznikami.
+
+    \item Połączenie typu trunk umożliwia przekazywanie ramek należących do
+    różnych sieci VLAN \textbf{po jednym fizycznym nośniku}.
+
+    \item \textbf{VTP} odpowiada za kontrolę połączenia trunk
+    oraz umożliwia zautomatyzowaną konfigurację wielu switchy z jednego miejsca.
+
+    \item Trunk może być tworzone między switchem a routerem
+    \parit{\textbf{router on a stick}}.
+
+    \item Umożliwia konfigurację wielu przełączników na drodze wymiany
+    odpowiednich ramek z sąsiadującymi przełącznikami.
+\end{itemize}
+
+\subsubsection*{Frame tagging}
+\begin{itemize}
+    \item Z ramkami przekazywanymi połączeniem trunk wędruje informacja o
+    przypisaniu ramki do odpowiedniej sieci wirtualnej.
+    \item Może być realizowany na różne sposoby, np:
+    \begin{itemize}
+        \item Najczęściej stosowany standard IEEE 802.1Q, w którym
+        \textbf{zmieniony jest nagłówek ramki 802.3}.
+
+        \item ISL (Cisco Inter-swirch Link), \parit{przestarzała} metoda,
+        w której \textbf{ramka jest enkapsulowana w ramce ISL}.
+        W nagłówku ISL jest pole identyfikujące VLAN.
+    \end{itemize}
+\end{itemize}
+
+\subsection*{Konfiguracja}
+\begin{itemize}
+    \item Konfiguracja routera dla odpowiedniej sieci VLAN jest realizowana
+    poprzez \textbf{logiczne podinterfejsy \parit{sub-interfaces}}.
+
+    \item Jeden fizyczny interfejs jest dzielony logicznie na wiele
+    podinterfejsów.
+
+    \item Router jest połączony tylko z jednym połączeniem trunk z jednym
+    ze switchy, ale działa jakby było kilka interfejsów, każdy przypisany
+    do innej sieci VLAN.
+
+    \item Przełącznik można skonfigurować jako serwer VTP,
+    klient VTP lub „transparent VTP”.
+    Można tworzyć tzw. dziedziny składające się z wielu
+    przełączników (każda dziedzina jest identyfikowana przez nazwę).
+    Informacje VTP są przekazywane i interpretowane w ramach odpowiednich
+    dziedzin.
+    W dziedzinie jeden przełącznik powinien być serwerem, reszta to na ogół
+    klienci.
+    Zmiany konfiguracji przeprowadza się na serwerze.
+    Dla dziedziny należy określić hasło (w celu zabezpieczenia).
+\end{itemize}
+
+\subsection*{Routowanie}
+
+\begin{itemize}
+    \item Musi być zapewnione między sieciami VLAN.
+    \item Osiągane przez \textbf{router on a stick} -
+    łącząc router łączem trunkingowym z pewnym przełącznikiem.
+    \item Jeśli router jest wykorzystywany jedynie do przekazywania pakietów
+    między różnymi sieciami VLAN, to można rozważyć też zastosowanie innego
+    rozwiązania – \textbf{przełączników warstwy trzeciej}.
+    \begin{itemize}
+        \item  Umożliwia zdefiniowanie sieci VLAN oraz sam zapewnia routing
+        między sieciami.
+        \item Przełącznik ma „w sobie” router.
+        \item Router ten może być łączony z innymi routerami, można na nim
+        konfigurować protokoły routowania.
+        \item Zwykle jednak przełącznik warstwy trzeciej nie ma interfejsów
+        technologii sieci rozległych WAN.
+    \end{itemize}
+\end{itemize}
+
+\pagebreak
+\end{document}
