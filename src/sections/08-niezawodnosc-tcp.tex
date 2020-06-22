@@ -6,6 +6,39 @@
 Na czym polega niezawodność protokołu TCP?
 }
 
+\subsection*{Mechanizmy niezawodności}
+\begin{itemize}
+    \item \textbf{Potwierdzanie otrzymania segmentów z mechanizmem zegara.}
+    \begin{itemize}
+        \item Odebrany segment musi być potwierdzony przez odbiorcę przez
+        wysłanie segmentu potwierdzajacego.
+
+        \item Jeśli potwierdzenie nie nadejdzie w odpowiednim czasie,
+        segment zostanie przesłany powtórnie.
+
+        \item Czas oczekiwania \textbf{zmienia się dynamicznie} i zależy od
+        stanu sieci \parit{obciązenia i parametrów}.
+    \end{itemize}
+
+    \item \textbf{Sumy kontrolne.}
+    \begin{itemize}
+        \item Jeśli segment zostanie nadesłany z niepoprawną sumą kontrolną,
+        to \textbf{jest odrzucany} i nie jest przesyłane potwierdzenie.
+
+        \item Nadawca po odczekaniu czasu RTO \parit{Retransmission Time Out}
+        prześle utracony fragment jeszcze raz.
+    \end{itemize}
+
+    \item \textbf{Przywracanie kolejności nadchodzących segmentów.}
+    \begin{itemize}
+        \item Segmenty mogą nadchodzić w innej kolejności niż zostały wysłane.
+
+        \item Oprogramowanie TCP przywraca prawidłową kolejność przed
+        przekazaniem do aplikacji.
+    \end{itemize}
+
+    \item \textbf{Odrzucanie zdublowanych danych.}
+\end{itemize}
 
 \pagebreak
 \end{document}
