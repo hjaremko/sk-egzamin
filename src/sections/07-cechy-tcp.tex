@@ -6,5 +6,31 @@
 Jakie są podstawowe cechy protokołu TCP?
 }
 
+\subsection*{Ważne cechy TCP}
+\begin{itemize}
+    \item Partnerzy \parit{komunikujące się procesy} tworzą połączenie
+    z wykorzystaniem mechanizmu uzgodnienia \parit{uzgadnianie trójfazowe
+    - three-way handshake}.
+
+    \item Zamknięcie połączenia odbywa się z wykorzystaniem mechanizmu
+    uzgodnienia, podczas którego partnerzy wyrażają zgodę na zamkniecie
+    połączenia.
+
+    \item TCP zapewnia \textbf{sterowanie przepływem}.
+    Informuje partnera o tym ile bajtów ze strumienia danych może od niego
+    przyjąć \parit{\textbf{okno oferowane} - advertized window}.
+
+    Rozmiar ten \textbf{zmienia się dynamicznie} i
+    jest równy rozmiarowi wolnego miejsca w buforze odbiorcy.
+    Zero oznacza, że nadawca musi zaczekać, aż program użytkowy odbierze dane
+    z bufora.
+
+    \item Dane ze strumienia są dzielone na fragmenty, które według TCP mają
+    najlepszy do przesłania rozmiar.
+    Jednostka przesyłania danych nazywa się \textbf{segmentem}.
+
+    \item Zapewnia \textbf{niezawodność połączenia}.
+\end{itemize}
+
 \pagebreak
 \end{document}
