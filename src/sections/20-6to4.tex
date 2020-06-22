@@ -1,0 +1,105 @@
+\documentclass[../sk-egzamin.tex]{subfiles}
+
+\begin{document}
+
+\question{
+Proszę opisać, jak działa mechanizm 6to4.
+}
+
+\subsection*{6to4}
+\begin{itemize}
+    \item Co jeśli ISP udostępnia \textbf{tylko} IPv4?
+    \item IPv4 jest \textbf{niekompatybilne} z IPv4!
+    \item \textbf{6to4} pozwala na łączenie się sieci 6to4 \textbf{z innymi}
+    sieciami 6to4 lub natywnymi sieciami IPv6 \textbf{poprzez} IPv4.
+\end{itemize}
+
+\subsection*{Postać adresu}
+\begin{minted}{python}
++---+------+-----------+--------+--------------------------------+
+| 3 | 13   | 32        | 16     | 64 bits                        |
++---+------+-----------+--------+--------------------------------+
+|FP | TLA  | V4ADDR    | SLA ID | Interface ID                   |
+|001|0x0002|           |        |                                |
++---+------+-----------+--------+--------------------------------+
+\end{minted}
+
+\begin{itemize}
+    \item \texttt{V4ADDR} - Enkapsulowany
+    adres IPv4 udostępniony przez ISP \parit{unikalny w skali świata,
+    od dostawcy}.
+
+    \item \texttt{SLA ID} - Jak byśmy chcieli podzielić wewnątrz firmy
+    na przykład.
+
+    \item \texttt{Interface ID} - Normalnie jak w IPv6.
+
+\end{itemize}
+
+
+\subsection*{Wyspy IPv6 w morzu IPv4}
+
+\textbf{Chcemy wysłać pakiet z komputera z sieci A do komputera w sieci B.}
+\begin{itemize}
+    \item Tworzony jest pakiet IPv6 z adresem docelowym B:
+    \item Prefiks jest inny więc wysyłamy do routera.
+    \item Następuje \textbf{enkapsulacja} pakietu IPv6 w IPv4.
+\end{itemize}
+
+\textbf{IP źródłowy:} \texttt{192.1.2.3} \\
+\textbf{IP docelowy:} \texttt{09fe:fdfc -> 9.254.253.252}
+
+\pagebreak
+
+\begin{minted}{py}
+                          _______________________________
+                         |                               |
+                         | Wide Area IPv4 Network        |
+                         |_______________________________|
+                                /                  \
+                      192.1.2.3/       9.254.253.252\
+ _____________________________/_   __________________\____________
+|                            /  | |                   \           |
+|IPv4 Site A        ##########  | |IPv4 Site B        ##########  |
+| __________________# 6to4   #_ | | __________________# 6to4   #_ |
+||                  # router # || ||                  # router # ||
+||IPv6 Site A       ########## || ||IPv6 Site B       ########## ||
+||2002:c001:0203::/48          || ||2002:09fe:fdfc::/4           ||
+||_____________________________|| ||_____________________________||
+|                               | |                               |
+|_______________________________| |_______________________________|
+\end{minted}
+
+\subsubsection*{Połączenie 6to4 z siecią działającą jedynie wg IPv6
+następuje przez „Relay router”.}
+
+\begin{itemize}
+    \item Routery graniczące NIE mogą przekazać do sieci działającej tylko
+    według IPv6 trasy bardziej szczegółowej niż \textbf{2002::/16}.
+    Chodzi o to, aby nie „zaśmiecać” natywnych sieci IPv6.
+    W związku z tym n\textbf{nie jest poprawna konfiguracja}, w której sieci
+    6to4 są połączone z dwoma niespójnymi kawałkami sieci działającej według
+    IPv4.
+\end{itemize}
+
+\begin{minted}{py}
+        _______________________________      ___________________
+       | Wide Area IPv4 Network        |    | Native IPv6 WAN   |
+       |_______________________________|    |___________________|
+              /                  \             //
+    192.1.2.3/       9.254.253.252\           //2001:0600::/48
+____________/_   __________________\_________//_
+           /  | |                   \       //  |
+  ##########  | |IPv4 Site B        ##########  |
+__# 6to4   #_ | | __________________# 6to4   #_ |
+  # router # || ||                  # router # ||
+  ########## || ||IPv6 Site B       ########## ||
+             || ||2002:09fe:fdfc::/4           ||
+__Site A_____|| ||_____________________________||
+              | |                               |
+______________| |_______________________________|
+\end{minted}
+
+
+\pagebreak
+\end{document}
