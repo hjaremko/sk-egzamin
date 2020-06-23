@@ -10,16 +10,21 @@ Proszę opisać protokół IPSec.
 \begin{itemize}
     \item Działa w \textbf{warstwie sieci} \parit{trzeciej}.
 
-    \item Wykorzysywany do szyfrowania i sprawdzania autentyczności i
+    \item \textbf{Bardziej framework wykorzystujący inne protokoły.}
+
+    \item Pewne \textbf{uzupełnienie IPv4, włączone do IPv6}.
+
+    \item Wykorzystywany do szyfrowania i sprawdzania autentyczności i
     integralności przesyłanych danych z dowolnej aplikacji.
 
     \item Proces szyfrowania i deszyfrowania jest \textbf{niewidoczny}
     dla użytkownika.
 
-    \item Głownymi częściami IPSec są protokoły:
+    \item Głownymi częściami IPSec są \textbf{protokoły}:
     \begin{itemize}
         \item \textbf{Authentication Headers} \parit{AH}.
         \begin{itemize}
+            \item \textbf{Nie ma szyfrowania - wykorzystywany HMAC}.
             \item Umożliwia sprawdzenie autentyczności komputerów
             uczestniczących w transmisji.
             \item Sprawdzenie integralności danych.
@@ -27,8 +32,9 @@ Proszę opisać protokół IPSec.
         \end{itemize}
         \item \textbf{Encapsulating Security Payloads} \parit{ESP}.
         \begin{itemize}
-            \item Zapewnia szyfrowanie, autentyczność i integralność danych.
-            \item Samodzielnie lub z AH.
+            \item Zapewnia \textbf{szyfrowanie}, autentyczność i integralność
+            danych.
+            \item Samodzielnie lub z AH, na ogół sam ESP jest wykorzystywany.
         \end{itemize}
     \end{itemize}
 \end{itemize}
@@ -54,9 +60,18 @@ Można ustalić zasadę kiedy IPSec ma być automatycznie zastosowany.
 \begin{itemize}
     \item \textbf{Transportu} \parit{w sieci lokalnej}
     między dwoma punktami końcowymi transmisji.
+    \begin{itemize}
+        \item Prostszy,
+        wymaga mniej przetwarzania danych, ale \textbf{mniej użyteczny}.
+        \item Nagłówek AH jest wstawiany \textbf{między} nagłowek IP i TCP.
+    \end{itemize}
     \item \textbf{Tunelowania} -
     szyfrowanie w niezabezpieczonej części sieci (np. dane między
     biurami przesyłane przez Internet).
+    \begin{itemize}
+        \item Więcej pracy, ale \textbf{bardziej użyteczny}.
+        \item Pakiet IP w pakiecie IP.
+    \end{itemize}
 
     \textbf{IPSec (ESP w trybie tunelowym) może być wykorzystany do realizacji
     VPN – Virtual Private Network}.
@@ -75,6 +90,16 @@ Można ustalić zasadę kiedy IPSec ma być automatycznie zastosowany.
 Filtr IPSec pozwala na automatyczne przepuszczenie datagramów IP, blokowanie
 lub użycie negocjacji (i w konsekwencji użycie IPSec) w zależności od źródła i
 miejsca docelowego IP, protokołu transportowego, portów źródłowych i docelowych.
+
+\subsection*{Obrazki}
+
+\includegraphics[width=\textwidth]{ipsec-ah-transport}
+
+\includegraphics[width=\textwidth]{ipsec-ah-tunnel}
+
+\includegraphics[width=\textwidth]{ipsec-esp-transport}
+
+\includegraphics[width=\textwidth]{ipsec-esp-tunnel}
 
 \pagebreak
 \end{document}
