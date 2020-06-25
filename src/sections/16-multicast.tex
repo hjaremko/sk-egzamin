@@ -1,0 +1,85 @@
+\documentclass[../sk-egzamin.tex]{subfiles}
+
+\begin{document}
+
+\question{
+Co to jest multiemisja \textit{(multicast)}? Co to jest IGMP?
+Jakie jest wsparcie dla przesyłania grupowego w technologii Ethernet?
+}
+
+\subsection*{Multiemisja - transmisja grupowa}
+
+\begin{itemize}
+    \item Wysyłanie jednego pakietu ze źródła do wielu miejsc docelowych.
+    Pakiety są kopiowane w routerach i switchach warstwy drugiej.
+
+    \item Mniejsze obciążenie sieci, wieksza skalowalność w stosunku do
+    unicastu.
+
+    \item Schematy jeden-do-wielu, wiele-do-wielu.
+
+    \item Komunikaty w większości protokołów routowania mają zarezerwowane
+    adresy multiemisji.
+
+    \item Aby uczestniczyć w transmisji grupowaej, komputer musi sprawdzać
+    określone adresy w przychodzących pakietach (IP) i generalnie w
+    ramkach (MAC).
+
+    \item Odbywa się z wykorzystaniem różnych mechanizmów i protokołów.
+\end{itemize}
+
+\subsection*{IGMP}
+\begin{itemize}
+    \item Wykorzystywany do dynamicznego rejestrowania/wyrejestrowania
+    odbiornika w routerze.
+
+    \item Komunikaty IGMP są przesyłane w pakietach IP z adresem docelowym
+    typu multicast i ustawioną wartością TTL na 1.
+\end{itemize}
+
+\subsubsection*{IGMPv1}
+\begin{itemize}
+    \item \textbf{Membership query} wysyłany okresowo \parit{co kilkadziesiąt
+    sekund} przez routery na wszystkie komputery.
+    \item \textbf{Membership report} służy do zgłoszenia sie jako odbiorca
+    pakietów wysyłanych na ten adres.
+    \begin{itemize}
+        \item Wysyłany też w odpowiedzi na membership query.
+    \end{itemize}
+\end{itemize}
+
+Host po otrzymaniu membership query czeka pewien pseudolosowy czas i wysyła
+membership report.
+Jeśli w tym pseudolosowym czasie host usłyszy membership report od innego
+hosta, to nie wysyła swojego raportu.
+
+\textbf{Host 'po cichu' opuszcza grupę.}
+Jeśli router nie dostanie raportu w odpowiedzi na \textbf{trzy kolejne}
+membership query, router usuwa grupę z tablicy multicastu i przestaje
+przesyłać pakiety kierowane do tej grupy.
+
+\subsubsection*{IGMPv2}
+\begin{itemize}
+    \item Dodano \textbf{leave group}.
+    \item Dodano \textbf{version2 membership report}.
+    \item Membership query może być \textbf{group-specific query}.
+\end{itemize}
+
+\subsubsection*{IGMPv3}
+\begin{itemize}
+    \item Możliwość zgłaszania sie do grup z \textbf{wyspecifikowaniem
+    adresu unicast} IPv4 pewnego nadawcy.
+\end{itemize}
+
+\subsection*{Wsparcie w Ethernet}
+\begin{itemize}
+    \item Ethernet daje możliwość adresowania \textbf{MAC typu multicast}.
+
+    \item \textbf{23 bity adresu IPv4 są wprost wykorzystane w adresie MAC}.
+
+    \item Każdy adres Ethernet multicast jest związany z 32 IPv4 klasy D
+    \parit{różnica na 5 bitach}.
+\end{itemize}
+
+\pagebreak
+\end{document}
