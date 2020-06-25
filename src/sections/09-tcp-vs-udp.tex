@@ -1,0 +1,43 @@
+\documentclass[../sk-egzamin.tex]{subfiles}
+
+\begin{document}
+
+\question{
+Proszę porównać protokół TCP i UDP.
+}
+
+\begin{tabularx}{\textwidth}{X|X}
+\textbf{UDP} & \textbf{TCP} \\
+\hline
+Bezpołączeniowy & Połączenie z wykorzystaniem trójfazowego uzgodnienia\\
+\hline
+Nie zapiewnia niezawodności & Zapewnia niezawodność połączenia\\
+\hline
+Niewielki nagłówek (8 bajtów) & Duży nagłówek (minimum 20 bajtów)\\
+\hline
+Brak sterowania przepływem & Sterowanie przepływem \parit{okno oferowane}\\
+\hline
+Mogą być przesyłane z adresem docelowym przesyłania grupowego & Chyba nie?\\
+\hline
+Aplikacja jest odpowiedzialna za rozmiar wysyłanego datagramu &
+Dane ze strumienia są dzielone na fragmentu, które wg. TCP mają najlepszy do
+przesłania rozmiar\\
+% \hline
+\end{tabularx}
+
+\subsection*{Nagłówek UDP}
+\begin{itemize}
+    \item Numer portu źródłowego \parit{16 bitów}
+    \item Numer portu docelowego \parit{16 bitów}
+    \item Długość UDP (nagłówek i dane) - wypełniana opcjonalne \parit{16 bitów}
+    \item Suma kontrolna \parit{16 bitów}
+    \begin{itemize}
+        \item Jedyny mechanizm sprawdzenia nieuszkodzenia datagramu.
+        \item Opjonalna w IPv4, obowiązkowa w IPv6.
+    \end{itemize}
+    \item Dane, jeśli są.
+\end{itemize}
+
+
+\pagebreak
+\end{document}
